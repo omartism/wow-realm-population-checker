@@ -22,6 +22,7 @@ request_data = {
 }
 
 client = discord.Client(intents=intents)
+global notify_role
 
 def get_realm_data():
     req = requests.get(token_url, params=request_data)
@@ -40,6 +41,9 @@ async def on_ready():
             for channel in guild.text_channels:
                 if channel.name == "general" or channel.name == "tel-aviv-meeting-room":
                     general_channel_id = channel.id
+            for role in guild.roles:
+                if role.name == "Ohio Resident" or role.name == "SoD Gamer":
+                    notify_role = role.id
         channel = await client.fetch_channel(general_channel_id)
         auto_send.start(channel)
 
@@ -47,7 +51,7 @@ async def on_ready():
 async def auto_send(channel: discord.TextChannel):
     if get_realm_data() != "LOCKED":
         print("SERVER IS UNLOCKED")
-        await channel.send('ATTENTION: SERVER IS UNLOCKED')
+        await channel.send(f'<@&{notify_role}>ATTENTION: SERVER IS UNLOCKED')
 
 
 client.run(discord_token)
