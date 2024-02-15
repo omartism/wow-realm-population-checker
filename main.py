@@ -22,7 +22,6 @@ request_data = {
 }
 
 client = discord.Client(intents=intents)
-global notify_role
 
 def get_realm_data():
     req = requests.get(token_url, params=request_data)
@@ -34,6 +33,7 @@ def get_realm_data():
 @client.event
 async def on_ready():
     global general_channel_id
+    global notify_role
     print(f'We have logged in as {client.user}')
     if not auto_send.is_running():
         guilds = client.guilds
@@ -42,7 +42,7 @@ async def on_ready():
                 if channel.name == "general" or channel.name == "tel-aviv-meeting-room":
                     general_channel_id = channel.id
             for role in guild.roles:
-                if role.name == "Ohio Resident" or role.name == "SoD Gamer":
+                if role.name == "JAX MAIN" or role.name == "SoD Gamer":
                     notify_role = role.id
         channel = await client.fetch_channel(general_channel_id)
         auto_send.start(channel)
